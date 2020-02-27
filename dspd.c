@@ -25,6 +25,11 @@
     			strncat(temp,&c,1);
     		}
     	}
+		if(strcmp(fin[count],temp)!=0){
+			strcpy(fin[count],temp);
+            strcpy(temp,"");
+    		++count;
+		}
     	fclose(fp);
         //start fileread check
         int i;
