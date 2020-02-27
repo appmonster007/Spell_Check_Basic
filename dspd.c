@@ -14,13 +14,13 @@
     	int count = 0;
     	while((c = fgetc(fp)) != EOF)
     	{
-    		if(c == ' ' || c == '\n')
+    		if(c == ' ' || c == '\n' || c=='-' )
     		{
     			strcpy(fin[count],temp);
                 strcpy(temp,"");
     			++count;
     		}
-    		else
+    		else if(c!='.' && c!='!' && c!='?' && c!=';' && c!='\'' && c!=',' && c!='"' && c!='(' && c!='<' && c!=')' && c!='>' && c!='{' && c!='}' && c!='[' && c!=']')
     		{
     			strncat(temp,&c,1);
     		}
