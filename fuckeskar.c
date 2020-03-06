@@ -44,10 +44,13 @@
     	while((c = fgetc(fp)) != EOF)
     	{
     		if(c == ' ' || c == '\n' || c=='-' )
-    		{
-    			strcpy(fin[count],temp);
-                strcpy(temp,"");
-    			++count;
+    		{	
+				if(strcmp(temp,"")!=0){
+					strcpy(fin[count],temp);
+                	strcpy(temp,"");
+    				++count;
+				}
+    			
     		}
     		else if(c!='.' && c!='!' && c!='?' && c!=';' && c!='\'' && c!=',' && c!='"' && c!='(' && c!='<' && c!=')' && c!='>' && c!='{' && c!='}' && c!='[' && c!=']')
     		{
@@ -69,7 +72,7 @@
 		head = head->next;
 		wordlist *tem = head;
         // while(tem->next!=NULL){
-		// 	printf("%s\t",tem->alp);
+		printf("");
 		// 	tem=tem->next;
 		// }
     	return head;
@@ -80,8 +83,8 @@
 		wordlist *p;
 	 	p = scan_file("sample.txt");
  		while(p->next!=NULL){
-			 printf("%s\n",p->alp);
-			 p= p->next;
+			 printf("%s ",p->alp);
+			 p = p->next;
  		}
 
     	return 0;
