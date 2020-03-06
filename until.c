@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <dirent.h>
 #include <string.h>
 #define maxnowrd 100
 #define maxlenwrd 20
@@ -86,8 +85,8 @@ wordlist* scan_file(char *dire, char* sort)
 			if(strcmp(temp,"")!=0){			
 				strcpy(fin,temp);
 				list_add(&head, newWord(fin), sort);
-            	strcpy(temp,"");
 			}
+            strcpy(temp,"");
     	}
     	else if(c!='.' && c!='!' && c!='?' && c!=';' && c!='\'' && c!=',' && c!='"' && c!='(' && c!='<' && c!=')' && c!='>' && c!='{' && c!='}' && c!='[' && c!=']')
     	{
@@ -105,7 +104,7 @@ wordlist* scan_file(char *dire, char* sort)
 int main()
 {
     wordlist *p,*q;
- 	p = scan_file("dict.txt", "sort");
+ 	p = scan_file("dict.txt", "unsort");
 	while(p!=NULL){
         printf("%s\n",p->alp);
 		p = p->next;
