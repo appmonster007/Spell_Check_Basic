@@ -68,17 +68,17 @@
 		
 		head = head->next;
 		wordlist *tem = head;
-        while(tem->next!=NULL){
-			printf("%s\t",tem->alp);
-			tem=tem->next;
-		}
+        // while(tem->next!=NULL){
+		// 	printf("%s\t",tem->alp);
+		// 	tem=tem->next;
+		// }
     	return head;
 	}
      
     int main()
     {
 		wordlist *p;
-	 	p=scan_file("sample.txt");
+	 	p = scan_file("sample.txt");
  		while(p->next!=NULL){
 			 printf("%s\n",p->alp);
 			 p= p->next;
