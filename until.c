@@ -104,12 +104,12 @@ wordlist* scan_file(char *dire, char* sort)
 int main()
 {
     wordlist *p,*q;
- 	p = scan_file("dict.txt", "unsort");
+ 	p = scan_file("dict.txt", "sort");
 	while(p!=NULL){
         printf("%s\n",p->alp);
 		p = p->next;
  	}
-    q = scan_file("sample.txt", "unsort");
+    q = scan_file("sample.txt", "sort");
 	while(q!=NULL){
         printf("%s\n",q->alp);
 		q = q->next;
