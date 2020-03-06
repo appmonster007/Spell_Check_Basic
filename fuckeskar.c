@@ -77,9 +77,8 @@
      
     int main()
     {
-		wordlist *diary;
-	 	diary=scan_file("sample.txt");
-		 dict=scan_file("dict.txt");
+		wordlist *p;
+	 	p=scan_file("sample.txt");
  		while(p->next!=NULL){
 			 printf("%s\n",p->alp);
 			 p= p->next;
