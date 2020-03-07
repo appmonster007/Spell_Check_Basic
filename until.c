@@ -110,10 +110,10 @@ int main()
         printf("%s\n",p->alp);
 		p = p->next;
  	}
-    q = scan_file("sample.txt", "sort");
-	while(q!=NULL){
-        printf("%s\n",q->alp);
-		q = q->next;
- 	}
+    // q = scan_file("sample.txt", "sort");
+	// while(q!=NULL){
+    //     printf("%s\n",q->alp);
+	// 	q = q->next;
+ 	// }
 	return 0;
 }
