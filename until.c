@@ -81,9 +81,9 @@ wordlist* scan_file(char *dire, char* sort)
     while((c = fgetc(fp)) != EOF)
     {
 		char* fin = (char*)malloc(sizeof(char)*20);
-    	if(c == ' ' || c == '\n' || c=='-' )
+    	if(c == ' ' || c == '\n' || c=='-' || c=='\'' )
     	{	
-			if(strcmp(temp,"")!=0){			
+			if(strcmp(temp,"")!=0 && strcmp(temp,"s")!=0){			
 				strcpy(fin,temp);
 				list_add(&head, newWord(fin), sort);
 			}
@@ -102,18 +102,22 @@ wordlist* scan_file(char *dire, char* sort)
     return head;
 }
 
+wordlist* creatdict(char *dire){
+    return scan_file(dire, "sort");
+}
+
 int main()
 {
     wordlist *p,*q;
- 	p = scan_file("dict.txt", "sort");
+ 	p = scan_file("sample.txt", "unsort");
 	while(p!=NULL){
         printf("%s\n",p->alp);
 		p = p->next;
  	}
-    // q = scan_file("sample.txt", "sort");
-	// while(q!=NULL){
-    //     printf("%s\n",q->alp);
-	// 	q = q->next;
- 	// }
+    q = creatdict("dict.txt");
+	while(q!=NULL){
+        printf("%s\n",q->alp);
+		q = q->next;
+ 	}
 	return 0;
 }
