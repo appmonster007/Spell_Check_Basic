@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #define maxnowrd 100
 #define maxlenwrd 20
 
@@ -8,6 +9,16 @@ typedef struct noe{
     struct noe* next;
     char* alp;
 } wordlist;
+
+char* tolowerstr(char* str){
+    char* lower = (char*)malloc(sizeof(char)*20);
+    for(int i = 0; str[i]; i++){
+        lower[i] = tolower(str[i]);
+    }
+    return lower;
+}
+
+
 
 /* Inserting the node at it's lexicographic position*/
 
@@ -19,17 +30,26 @@ void sort_alpha(wordlist** head){
     if(list){
         while (list && list->next)
         {
-            if (strcmp(list->alp, list->next->alp) > 0)
+            if (strcmp(tolowerstr(list->alp), tolowerstr(list->next->alp)) > 0)
             {
                 temp = list->alp;
                 list->alp = list->next->alp;
                 list->next->alp = temp;
             }
-            else if(strcmp(list->alp, list->next->alp) == 0)
+            else if(strcmp(tolowerstr(list->alp), tolowerstr(list->next->alp)) == 0)
             {
-                tem = list->next;
-                list->next = list->next->next;
-                free(tem);
+                if (strcmp(list->alp, list->next->alp) > 0)
+                {
+                    temp = list->alp;
+                    list->alp = list->next->alp;
+                    list->next->alp = temp;
+                }
+                else if(strcmp(list->alp, list->next->alp) == 0)
+                {
+                    tem = list->next;
+                    list->next = list->next->next;
+                    free(tem);
+                }
             }
         list = list->next;
         }
@@ -144,7 +164,7 @@ int main()
     // Scanninig the dict file and making a wordlist
     dict = createdict("dict.txt");
 	while(dict!=NULL){
-        printf("%s\t",dict->alp);
+        printf("%s\n",dict->alp);
 		dict = dict->next;
  	}
 	return 0;
