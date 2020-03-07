@@ -130,19 +130,22 @@ wordlist* createdict(char *dire){
 
 int main()
 {
-    wordlist *p,*q;
- 	p = scan_file("sample.txt", "unsort");
-	while(p!=NULL){
-        printf("%s ",p->alp);
-		p = p->next;
+    wordlist *sample,*dict;
+
+    // Scanninig the sample file and making a wordlist
+    sample = scan_file("sample.txt", "unsort");
+	while(sample!=NULL){
+        printf("%s ",sample->alp);
+		sample = sample->next;
  	}
 
     printf("\n\n");
 
-    q = createdict("dict.txt");
-	while(q!=NULL){
-        printf("%s ",q->alp);
-		q = q->next;
+    // Scanninig the dict file and making a wordlist
+    dict = createdict("dict.txt");
+	while(dict!=NULL){
+        printf("%s\t",dict->alp);
+		dict = dict->next;
  	}
 	return 0;
 }
