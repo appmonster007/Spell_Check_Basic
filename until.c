@@ -10,6 +10,8 @@ typedef struct noe{
     char* alp;
 } wordlist;
 
+/* Get string and convert it to Lowercase string and return */
+
 char* tolowerstr(char* str){
     char* lower = (char*)malloc(sizeof(char)*20);
     for(int i = 0; str[i]; i++){
