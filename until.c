@@ -9,6 +9,8 @@ typedef struct noe{
     char* alp;
 } wordlist;
 
+/* Inserting the node at it's lexicographic position*/
+
 ///////////////////////////////////////////ALL CAPITALS ARE AT FIRST??????????????????????????????????????????????????
 void sort_alpha(wordlist** head){
     wordlist *list, *tem;
@@ -34,6 +36,7 @@ void sort_alpha(wordlist** head){
     }
 }
 
+/* To find list size of wordlist */
 
 ////////////////////////////////////////////////////////LIST SIZE?????????????????????????????????????????????????????????????
 int list_size(wordlist** head){
@@ -49,18 +52,33 @@ int list_size(wordlist** head){
     return size;
 }
 
+/* Add entry to the wordlist */
 
 void list_add(wordlist** head, wordlist* new, char* sort){
     if(new){
-        new->next = *head;
-        *head = new;
-        if(strcmp(sort,"sort")==0)
+        if(strcmp(sort,"sort")==0){
+            new->next = *head;
+            *head = new;
             sort_alpha(head);
+        }
+        else{
+            wordlist* ptr = *head;
+            if(ptr!=NULL){
+                while(ptr->next != NULL){
+                    ptr = ptr->next;
+                }
+                ptr->next = new;
+            }
+            else
+                *head = new;
+        }
     }
     else{
         printf("NULL entry\n");
     }
 }
+
+/* Create new entry for wordslist */
 
 wordlist* newWord(char* word){
     wordlist* new;
@@ -71,6 +89,8 @@ wordlist* newWord(char* word){
     }
     return (new);
 }
+
+/* To scan *.txt file and make a wordlist */
 
 wordlist* scan_file(char *dire, char* sort)
 {
@@ -102,7 +122,9 @@ wordlist* scan_file(char *dire, char* sort)
     return head;
 }
 
-wordlist* creatdict(char *dire){
+/* (Q1.) Create dictionary function */
+
+wordlist* createdict(char *dire){
     return scan_file(dire, "sort");
 }
 
@@ -111,12 +133,15 @@ int main()
     wordlist *p,*q;
  	p = scan_file("sample.txt", "unsort");
 	while(p!=NULL){
-        printf("%s\n",p->alp);
+        printf("%s ",p->alp);
 		p = p->next;
  	}
-    q = creatdict("dict.txt");
+
+    printf("\n\n");
+
+    q = createdict("dict.txt");
 	while(q!=NULL){
-        printf("%s\n",q->alp);
+        printf("%s ",q->alp);
 		q = q->next;
  	}
 	return 0;
