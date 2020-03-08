@@ -181,6 +181,15 @@ mruword* newmruWord(char* word){
     return (new);
 }
 
+mru* newBucket(){
+    mru *bucket=(mru*)malloc(sizeof(mru));
+    bucket->size=0;
+    bucket->head=NULL;
+    bucket->tail=NULL;
+
+    return bucket;
+}
+
 /* Move recently used word to top of queue */
 
 void movetohead(char* str, mru* bucket){
@@ -351,14 +360,11 @@ mispword* insert_mis(mispword* head,char *st){
 
 
 
-void spellchecker(wordlist *q, wordlist *dict, mispword *head){
+void spellchecker(wordlist *q, wordlist *dict, mispword *head, mru* bucket){
 // 	strcpy(head->alp,q->alp);
 // 	head->next=head;
 // 	head->freq=1;
-    mru *bucket=(mru*)malloc(sizeof(mru));
-    bucket->size=0;
-    bucket->head=NULL;
-    bucket->tail=NULL;
+    
 	while(q!=NULL){
         int stat=0;
         wordlist *p = dict;
@@ -396,11 +402,11 @@ int main()
     head->freq=0;
     head->alp="qwerty";
     head->next=head;
-
+    mru* bucket = newBucket();
     // Scanninig the sample file and making a wordlist
     sample = scan_file("sample.txt", "unsort");
     dict = create_dict("dict.txt");
-    spellchecker(sample,dict,head);
+    spellchecker(sample,dict,head,bucket);
 	
     
     
