@@ -330,19 +330,17 @@ misp* insert_mis(misp* head,char *st){
             printf("no mistakes");
             return;
         }
-        
+
+        printf("----------------------------------------------\n");
+        printf("Mispelled words with freq are:\n");
 		while(temp->next!=head){
             // if(head->freq!=0){
             //     printf("%s with %d freq\n",temp->alp,temp->freq);
             // }
-            printf("%s with %d freq\n",temp->alp,temp->freq);
+            printf("%s\t\t%d\n",temp->alp,temp->freq);
 			temp=temp->next;
 		}
-
-        
-        
-        
-		
+        printf("----------------------------------------------\n");	
     }
 
 
