@@ -5,11 +5,26 @@
 #define maxnowrd 100
 #define maxlenwrd 20
 
-typedef struct noe{
-    struct noe* next;
+
+typedef struct word{
+    struct word* next;
     char* alp;
 } wordlist;
 
+typedef struct word{
+    struct word* next;
+    char* alp;
+    int freq;
+} mruword;
+
+typedef struct most_recents{
+    mruword* head;
+    mruword* tail;
+    int size;
+} mru;
+
+
+//////////////////////////////////////////////Creating list of words//////////////////////////////////////////////////////
 /* Get string and convert it to Lowercase string and return */
 
 char* tolowerstr(char* str){
@@ -146,9 +161,97 @@ wordlist* scan_file(char *dire, char* sort)
 
 /* (Q1.) Create dictionary function */
 
-wordlist* createdict(char *dire){
+wordlist* create_dict(char *dire){
     return scan_file(dire, "sort");
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+mruword* newmruWord(char* word){
+    mruword* new;
+    new = (mruword*)malloc(sizeof(mruword));
+    if(new){
+        new->alp = word;
+        new->next = NULL;
+        new->freq = 1;
+    }
+    return (new);
+}
+
+int is_present(char* str, mru* bucket){
+    int is = 0;
+    if(bucket->head!=NULL && bucket->tail!=NULL){
+        mruword* word = bucket->head;
+        while(word->next!=NULL && is == 0){
+            if(strcmp(tolowerstr(word->alp), tolowerstr(str)) == 0){
+                is = 1;
+            }
+            word = word->next;
+        }
+    }
+    return is;
+}
+
+void insert_MRU(char* str, mru* bucket){
+    if(bucket->head!=NULL && bucket->tail!=NULL){
+        if(!is_present(str, bucket)){
+            mruword* prevhead = bucket->head;
+            bucket->head = newmruWord(str);
+            (bucket->head)->next = prevhead;
+            bucket->size += 1;
+            if(bucket->size>10){
+                mruword* prev;
+                mruword* tail = bucket->head;
+                while(tail->next!=NULL){
+                    prev = tail;
+                    tail = tail->next;
+                }
+                prev->next = NULL;
+                free(tail);
+                bucket->size -= 1;
+            }
+        }
+    }
+    else{
+        bucket->head = newmruWord(str);
+        bucket->tail = bucket->head;
+        bucket->size += 1;
+    }
+}
+
+void increment(char* str, mru* bucket){
+    if(bucket->head!=NULL && bucket->tail!=NULL){
+        if(is_present(str, bucket)){
+            int is = 0;
+            mruword* ptr = bucket->head;
+            while(ptr->next!=NULL && is == 0){
+                if(strcmp(tolowerstr(ptr->alp), tolowerstr(str)) == 0){
+                    is = 1;
+                    ptr->freq +=1 ;
+                }
+            }
+        }
+    }
+} 
+
+void display_MRU(mru* bucket){
+    if(bucket->head!=NULL && bucket->tail!=NULL){
+        printf("----------------------------------------------");
+        printf("Most recently used words are:");
+        mruword* ptr = bucket->head;
+        while(ptr!=NULL){
+            pritnf("%s\n",ptr->alp);
+            ptr = ptr->next;
+        }
+        printf("----------------------------------------------");
+    }
+    else
+    {
+        printf("No words");
+    }
+    
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main()
 {
@@ -164,7 +267,7 @@ int main()
     printf("\n\n");
 
     // Scanninig the dict file and making a wordlist
-    dict = createdict("dict.txt");
+    dict = create_dict("dict.txt");
 	while(dict!=NULL){
         printf("%s\n",dict->alp);
 		dict = dict->next;
