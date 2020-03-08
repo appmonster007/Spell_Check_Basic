@@ -213,6 +213,24 @@ int is_present(char* str, mru* bucket){
     return is;
 }
 
+/* Increment frequency of MRU */
+
+void increment(char* str, mru* bucket){
+    if(bucket->head!=NULL && bucket->tail!=NULL){
+        if(is_present(str, bucket)){
+            int is = 0;
+            mruword* ptr = bucket->head;
+            while(ptr!=NULL && is == 0){
+                if(strcmp(tolowerstr(ptr->alp), tolowerstr(str)) == 0){
+                    is = 1;
+                    ptr->freq +=1 ;
+                }
+                ptr = ptr->next;
+            }
+        }
+    }
+} 
+
 /* Insert MRU word in MRU queue/bucket at top or head or beginning and delete tail if size exceeded */
 
 void insert_MRU(char* str, mru* bucket){
@@ -234,6 +252,9 @@ void insert_MRU(char* str, mru* bucket){
                 bucket->size -= 1;
             }
         }
+        else{
+            increment(str, bucket);
+        }
     }
     else{
         bucket->head = newmruWord(str);
@@ -242,30 +263,12 @@ void insert_MRU(char* str, mru* bucket){
     }
 }
 
-/* Increment frequency of MRU */
-
-void increment(char* str, mru* bucket){
-    if(bucket->head!=NULL && bucket->tail!=NULL){
-        if(is_present(str, bucket)){
-            int is = 0;
-            mruword* ptr = bucket->head;
-            while(ptr!=NULL && is == 0){
-                if(strcmp(tolowerstr(ptr->alp), tolowerstr(str)) == 0){
-                    is = 1;
-                    ptr->freq +=1 ;
-                }
-                ptr = ptr->next;
-            }
-        }
-    }
-} 
-
 /* Display MRU bucket or queue */
 
 void display_MRU(mru* bucket){
     if(bucket->head!=NULL && bucket->tail!=NULL){
         printf("----------------------------------------------\n");
-        printf("Most recently used words are:\n");
+        printf("Most recently used words with freq are:\n");
         mruword* ptr = bucket->head;
         while(ptr!=NULL){
             printf("%s\t\t%d\n",ptr->alp,ptr->freq);
@@ -337,7 +340,7 @@ misp* insert_mis(misp* head,char *st){
             // if(head->freq!=0){
             //     printf("%s with %d freq\n",temp->alp,temp->freq);
             // }
-            printf("%s\t\t%d\n",temp->alp,temp->freq);
+            printf("%s\t\t\t%d\n",temp->alp,temp->freq);
 			temp=temp->next;
 		}
         printf("----------------------------------------------\n");	
