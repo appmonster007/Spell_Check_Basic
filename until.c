@@ -264,14 +264,14 @@ void increment(char* str, mru* bucket){
 
 void display_MRU(mru* bucket){
     if(bucket->head!=NULL && bucket->tail!=NULL){
-        printf("----------------------------------------------");
+        printf("----------------------------------------------\n");
         printf("Most recently used words are:");
         mruword* ptr = bucket->head;
         while(ptr!=NULL){
             printf("%s\n",ptr->alp);
             ptr = ptr->next;
         }
-        printf("----------------------------------------------");
+        printf("----------------------------------------------\n");
     }
     else
     {
@@ -361,6 +361,9 @@ void compare_sample_and_dict(wordlist *q, wordlist *dict, misp *head){
 // 	head->next=head;
 // 	head->freq=1;
     mru *bucket=(mru*)malloc(sizeof(mru));
+    bucket->size=0;
+    bucket->head=NULL;
+    bucket->tail=NULL;
 	while(q!=NULL){
         int stat=0;
         wordlist *p = dict;
@@ -382,11 +385,11 @@ void compare_sample_and_dict(wordlist *q, wordlist *dict, misp *head){
              head=insert_mis(head,q->alp);
  	    }
         else{
-            // is_present(p->alp,bucket);
+            insert_MRU(q->alp,bucket);
         }
  	    q=q->next;
  	}
-    // display_MRU(bucket);
+    display_MRU(bucket);
  	display_mis(head);
 }
 
@@ -404,6 +407,7 @@ int main()
     dict = create_dict("dict.txt");
     compare_sample_and_dict(sample,dict,head);
 	
+    
     
 	return 0;
 }
