@@ -166,6 +166,10 @@ wordlist* create_dict(char *dire){
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////Most recently used words///////////////////////////////////////////////////
+
+/* Creating a new recently used word */
+
 mruword* newmruWord(char* word){
     mruword* new;
     new = (mruword*)malloc(sizeof(mruword));
@@ -177,9 +181,10 @@ mruword* newmruWord(char* word){
     return (new);
 }
 
+/* Move recently used word to top of queue */
+
 void movetohead(char* str, mru* bucket){
     if(bucket->head!=NULL && bucket->tail!=NULL){
-        mruword *wordnode;
         mruword *pptr;
         mruword* ptr = bucket->head;
         while(ptr!=NULL && strcmp(tolowerstr(ptr->alp), tolowerstr(str)) != 0){
@@ -191,6 +196,8 @@ void movetohead(char* str, mru* bucket){
         bucket->head = ptr;
     }
 }
+
+/* Check if word is present in MRU queue/bucket */
 
 int is_present(char* str, mru* bucket){
     int is = 0;
@@ -205,6 +212,8 @@ int is_present(char* str, mru* bucket){
     }
     return is;
 }
+
+/* Insert MRU word in MRU queue/bucket at top or head or beginning and delete tail if size exceeded */
 
 void insert_MRU(char* str, mru* bucket){
     if(bucket->head!=NULL && bucket->tail!=NULL){
@@ -233,20 +242,25 @@ void insert_MRU(char* str, mru* bucket){
     }
 }
 
+/* Increment frequency of MRU */
+
 void increment(char* str, mru* bucket){
     if(bucket->head!=NULL && bucket->tail!=NULL){
         if(is_present(str, bucket)){
             int is = 0;
             mruword* ptr = bucket->head;
-            while(ptr->next!=NULL && is == 0){
+            while(ptr!=NULL && is == 0){
                 if(strcmp(tolowerstr(ptr->alp), tolowerstr(str)) == 0){
                     is = 1;
                     ptr->freq +=1 ;
                 }
+                ptr = ptr->next;
             }
         }
     }
 } 
+
+/* Display MRU bucket or queue */
 
 void display_MRU(mru* bucket){
     if(bucket->head!=NULL && bucket->tail!=NULL){
