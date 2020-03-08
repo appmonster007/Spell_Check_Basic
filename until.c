@@ -15,7 +15,7 @@ typedef struct word{
     struct word* next;
     char* alp;
     int freq;
-} mruword, misp;
+} mruword, mispword;
 
 typedef struct most_recents{
     mruword* head;
@@ -285,14 +285,14 @@ void display_MRU(mru* bucket){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-misp* insert_mis(misp* head,char *st){
-		misp* temp;
+mispword* insert_mis(mispword* head,char *st){
+		mispword* temp;
 // 		printf("called");
 		temp=head;
 		int stat=0;
 		
 		if(head==NULL){
-			misp* new = (misp*)malloc(sizeof(misp));
+			mispword* new = (mispword*)malloc(sizeof(mispword));
 			new->alp=strdup(st);
 // 			strcat(new->alp,st);
 			new->next=new;
@@ -310,7 +310,7 @@ misp* insert_mis(misp* head,char *st){
 				temp=temp->next;
 			}
 			if(stat==0){
-				misp* new = (misp*)malloc(sizeof(misp));
+				mispword* new = (mispword*)malloc(sizeof(mispword));
 				new->alp=strdup(st);
 			 //   strcat(new->alp,st);
 			    // printf("unexistant: %s\n",st);
@@ -325,9 +325,9 @@ misp* insert_mis(misp* head,char *st){
 		return head;
 	}
 
-	void display_mis(misp *head){
+	void display_mis(mispword *head){
 	    
-		misp *temp=head;
+		mispword *temp=head;
 // 		int c=0;
         if(head==NULL){
             printf("no mistakes");
@@ -351,7 +351,7 @@ misp* insert_mis(misp* head,char *st){
 
 
 
-void compare_sample_and_dict(wordlist *q, wordlist *dict, misp *head){
+void compare_sample_and_dict(wordlist *q, wordlist *dict, mispword *head){
 // 	strcpy(head->alp,q->alp);
 // 	head->next=head;
 // 	head->freq=1;
@@ -392,7 +392,7 @@ void compare_sample_and_dict(wordlist *q, wordlist *dict, misp *head){
 int main()
 {
     wordlist *sample,*dict;
-    misp *head = (misp*)malloc(sizeof(misp));
+    mispword *head = (mispword*)malloc(sizeof(mispword));
     head->freq=0;
     head->alp="qwerty";
     head->next=head;
