@@ -177,6 +177,21 @@ mruword* newmruWord(char* word){
     return (new);
 }
 
+void movetohead(char* str, mru* bucket){
+    if(bucket->head!=NULL && bucket->tail!=NULL){
+        mruword *wordnode;
+        mruword *pptr;
+        mruword* ptr = bucket->head;
+        while(ptr!=NULL && strcmp(tolowerstr(ptr->alp), tolowerstr(str)) != 0){
+            pptr = ptr;
+            ptr = ptr->next;
+        }
+        pptr->next = ptr->next;
+        ptr->next = bucket->head;
+        bucket->head = ptr;
+    }
+}
+
 int is_present(char* str, mru* bucket){
     int is = 0;
     if(bucket->head!=NULL && bucket->tail!=NULL){
