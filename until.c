@@ -23,6 +23,9 @@ typedef struct most_recents{
     int size;
 } mru;
 
+typedef struct mispelled{
+    mispword* head;
+} misp;
 
 //////////////////////////////////////////////Creating list of words//////////////////////////////////////////////////////
 /* Get string and convert it to Lowercase string and return */
@@ -294,96 +297,89 @@ void display_MRU(mru* bucket){
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-mispword* insert_mis(mispword* head,char *st){
-		mispword* temp;
-// 		printf("called");
-		temp=head;
+
+mispword* newmispWord(char* word){
+    mispword* new;
+    new = (mispword*)malloc(sizeof(mispword));
+    if(new){
+        new->alp=strdup(word);
+		new->next=new;
+		new->freq=1;
+    }
+    return (new);
+}
+
+misp* newMispelled(){
+    misp *bucket=(misp*)malloc(sizeof(misp));
+    bucket->head=NULL;
+    return bucket;
+}
+
+void display_mis(misp *chead){
+	    mispword *temp=chead->head;
+        if(chead->head==NULL){
+            printf("No mistakes\n");
+            return;
+        }
+        else{
+            printf("----------------------------------------------\n");
+            printf("Mispelled words with freq are:\n");
+		    do{
+                printf("%s\t\t\t%d\n",temp->alp,temp->freq);
+		    	temp=temp->next;
+		    }
+            while(temp!=chead->head);
+            printf("----------------------------------------------\n");	
+        }
+    }
+
+
+
+void insert_mis(misp* chead,char *st){
+        mispword* temp;
+		temp=chead->head;
 		int stat=0;
 		
-		if(head==NULL){
-			mispword* new = (mispword*)malloc(sizeof(mispword));
-			new->alp=strdup(st);
-// 			strcat(new->alp,st);
-			new->next=new;
-			new->freq=1;
-			head=new;
+		if(chead->head==NULL){
+			mispword* new = newmispWord(st);
+			chead->head=new;
 		}
-		
 		else{
-			while(temp->next!=head && stat==0){
+			while(temp->next!=chead->head && stat==0){
 				if(strcmp(temp->alp,st)==0){
-                    // printf("already existant: %s\n",st);
 					temp->freq+=1;
 					stat=1;
 				}
 				temp=temp->next;
 			}
 			if(stat==0){
-				mispword* new = (mispword*)malloc(sizeof(mispword));
-				new->alp=strdup(st);
-			 //   strcat(new->alp,st);
-			    // printf("unexistant: %s\n",st);
-				new->freq=1;
+				mispword* new = newmispWord(st);
 				new->next=temp->next;
 				temp->next=new;
-				head=new;
+				chead->head=new;
 			}
 			
 		}
-		
-		return head;
 	}
 
-	void display_mis(mispword *head){
-	    
-		mispword *temp=head;
-// 		int c=0;
-        if(head==NULL){
-            printf("no mistakes");
-            return;
-        }
-
-        printf("----------------------------------------------\n");
-        printf("Mispelled words with freq are:\n");
-		while(temp->next!=head){
-            // if(head->freq!=0){
-            //     printf("%s with %d freq\n",temp->alp,temp->freq);
-            // }
-            printf("%s\t\t\t%d\n",temp->alp,temp->freq);
-			temp=temp->next;
-		}
-        printf("----------------------------------------------\n");	
-    }
+	
 
 
 
 
-
-
-void spellchecker(wordlist *q, wordlist *dict, mispword *head, mru* bucket){
-// 	strcpy(head->alp,q->alp);
-// 	head->next=head;
-// 	head->freq=1;
-    
+void spellchecker(wordlist *q, wordlist *dict, misp *head, mru* bucket){
 	while(q!=NULL){
         int stat=0;
         wordlist *p = dict;
         
 	    while(p!=NULL && stat==0){
-            // char a[maxlenwrd],b[maxlenwrd];
-            // strcpy(a,p->alp);
-            // strcpy(b,q->alp);
-            // printf("%s : %s\n",p->alp,q->alp);
-            
             if(strcmp(p->alp,q->alp)==0){
                 stat=1;
-                // printf("caught %s : %s\n",p->alp,q->alp);
             }
             p=p->next;
  	    }
  	    if(stat==0){
-            //  printf("started insertion: %s\n",q->alp);
-             head=insert_mis(head,q->alp);
+            insert_mis(head,q->alp);
  	    }
         else{
             insert_MRU(q->alp,bucket);
@@ -398,10 +394,8 @@ void spellchecker(wordlist *q, wordlist *dict, mispword *head, mru* bucket){
 int main()
 {
     wordlist *sample,*dict;
-    mispword *head = (mispword*)malloc(sizeof(mispword));
-    head->freq=0;
-    head->alp="qwerty";
-    head->next=head;
+
+    misp* head = newMispelled();
     mru* bucket = newBucket();
     // Scanninig the sample file and making a wordlist
     sample = scan_file("sample.txt", "unsort");
