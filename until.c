@@ -345,13 +345,14 @@ void insert_mis(misp* chead,char *st){
 			chead->head=new;
 		}
 		else{
-			while(temp->next!=chead->head && stat==0){
+			do{
 				if(strcmp(temp->alp,st)==0){
 					temp->freq+=1;
 					stat=1;
 				}
 				temp=temp->next;
 			}
+            while(temp!=chead->head && stat==0);
 			if(stat==0){
 				mispword* new = newmispWord(st);
 				new->next=temp->next;
