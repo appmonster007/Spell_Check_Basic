@@ -351,7 +351,7 @@ mispword* insert_mis(mispword* head,char *st){
 
 
 
-void compare_sample_and_dict(wordlist *q, wordlist *dict, mispword *head){
+void spellchecker(wordlist *q, wordlist *dict, mispword *head){
 // 	strcpy(head->alp,q->alp);
 // 	head->next=head;
 // 	head->freq=1;
@@ -400,7 +400,7 @@ int main()
     // Scanninig the sample file and making a wordlist
     sample = scan_file("sample.txt", "unsort");
     dict = create_dict("dict.txt");
-    compare_sample_and_dict(sample,dict,head);
+    spellchecker(sample,dict,head);
 	
     
     
