@@ -268,7 +268,7 @@ void display_MRU(mru* bucket){
         printf("Most recently used words are:");
         mruword* ptr = bucket->head;
         while(ptr!=NULL){
-            printf("%s\n",ptr->alp);
+            printf("%s\t\t%d\n",ptr->alp,ptr->freq);
             ptr = ptr->next;
         }
         printf("----------------------------------------------\n");
