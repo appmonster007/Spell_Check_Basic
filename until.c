@@ -15,7 +15,7 @@ typedef struct word{
     struct word* next;
     char* alp;
     int freq;
-} mruword;
+} mruword, misp;
 
 typedef struct most_recents{
     mruword* head;
@@ -281,12 +281,6 @@ void display_MRU(mru* bucket){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-typedef struct mispel{
-	struct mispel* next;
-	char *alp;
-	int freq; 
-}misp;
 
 misp* insert_mis(misp* head,char *st){
 		misp* temp;
