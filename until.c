@@ -162,6 +162,41 @@ wordlist* scan_file(char *dire, char* sort)
     return head;
 }
 
+wordlist* scan_file_s(char *dire, char* sort)
+{
+    wordlist* head = NULL;
+    //
+    char buffer[maxlenwrd*maxnowrd];
+    //
+    fgets(buffer, maxlenwrd*maxnowrd,stdin);
+    char c,temp[maxlenwrd]="";
+	int count = 0,i=0;
+    while(buffer[i] != '\0')
+    {
+        char c=buffer[i];
+		char* fin = (char*)malloc(sizeof(char)*20);
+    	if(c == ' ' || c == '\n' || c=='-' || c=='\'' )
+    	{	
+			if(strcmp(temp,"")!=0 && strcmp(temp,"s")!=0){			
+				strcpy(fin,temp);
+				list_add(&head, newWord(fin), sort);
+			}
+            strcpy(temp,"");
+    	}
+    	else if(c!='.' && c!='!' && c!='?' && c!=';' && c!='\'' && c!=',' && c!='"' && c!='(' && c!='<' && c!=')' && c!='>' && c!='{' && c!='}' && c!='[' && c!=']')
+    	{
+    		strncat(temp,&c,1);
+    	}
+        i++;
+    }
+    char* fin = (char*)malloc(sizeof(char)*20);
+    strcpy(fin,temp);
+	list_add(&head, newWord(fin), sort);
+ 	// fclose(fp);
+	
+    return head;
+}
+
 /* (Q1.) Create dictionary function */
 
 wordlist* create_dict(char *dire){
@@ -399,7 +434,7 @@ int main()
     misp* head = newMispelled();
     mru* bucket = newBucket();
     // Scanninig the sample file and making a wordlist
-    sample = scan_file("sample.txt", "unsort");
+    sample = scan_file_s("sample.txt", "unsort");
     dict = create_dict("dict.txt");
     spellchecker(sample,dict,head,bucket);
 	
