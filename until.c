@@ -403,17 +403,49 @@ void insert_mis(misp* chead,char *st){
 
 
 
-void spellchecker(wordlist *q, wordlist *dict, misp *head, mru* bucket){
-	while(q!=NULL){
-        int stat=0;
-        wordlist *p = dict;
-        
-	    while(p!=NULL && stat==0){
-            if(strcmp(p->alp,q->alp)==0){
-                stat=1;
+void indexer(wordlist* dict, wordlist* index[]){
+    int a=0;
+    wordlist* temp = dict;
+    for(int i =0; i<26; i++){
+        index[i] = NULL;
+    }
+    while(temp!=NULL){
+        char d;
+        d = tolower(temp->alp[0]);
+        if(((int)d-97)<26){
+            a = ((int)d-97);
+            if(index[a]==NULL){
+                index[a]= temp;
             }
-            p=p->next;
+        }
+        temp = temp->next;
+    }
+}
+
+wordlist* retindex(wordlist* index[], char* str){
+    int d = (int)tolower(str[0]);
+    return index[d-97];
+}
+
+void spellchecker(wordlist *q, wordlist *dict, misp *head, mru* bucket){
+	wordlist* index[26];
+    indexer(dict,index);
+    while(q!=NULL){
+        int stat=0;
+        wordlist *p = retindex(index,q->alp);
+        
+	    if(is_present(q->alp,bucket)==0){
+            while(p!=NULL && stat==0){
+                if(strcmp(p->alp,q->alp)==0){
+                stat=1;
+                }
+                p=p->next;
+            }     
  	    }
+        else{
+            stat=1;
+
+        }
  	    if(stat==0){
             insert_mis(head,q->alp);
  	    }
